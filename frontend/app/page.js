@@ -17,6 +17,8 @@ import {
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { saveCompany } from "@/services/companyServices";
+import { savePersonal } from "@/services/personalServices";
 
 export default function MultiStepForm() {
   const [step, setStep] = useState(1);
@@ -26,15 +28,16 @@ export default function MultiStepForm() {
     handleSubmit,
     trigger,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
     shouldUnregister: false,
   });
 
-  
+
   const handleNext = async () => {
-    const step1Fields = [
+    const valid = await trigger([
       "firstName",
       "lastName",
       "email",
@@ -43,94 +46,66 @@ export default function MultiStepForm() {
       "gender",
       "skills",
       "address",
-    ];
+    ]);
 
-    const valid = await trigger(step1Fields);
+    if (!valid) return;
 
-    if (valid) {
-      toast.success("Step 1 completed!");
+    const personalData = {
+      firstName: getValues("firstName"),
+      lastName: getValues("lastName"),
+      email: getValues("email"),
+      phone: getValues("phone"),
+      dob: getValues("dob"),
+      gender: getValues("gender"),
+      skills: getValues("skills"),
+      address: getValues("address"),
+    };
+    console.log(personalData)
+
+    try {
+      const result = await savePersonal(personalData);
+
+      toast.success(result.message);
+
       setStep(2);
-    } else {
-      toast.error("Please fix errors in Personal Info");
+    } catch (error) {
+      toast.error("Failed to save personal information");
+      console.error(error);
+      console.log(error.response);
+      console.log(error.response?.data);
+      console.log(error.message);
+      throw error;
+
+
     }
   };
 
-  // FINAL SUBMIT
-//  const onSubmit = async (data) => {
-//   const step2Fields = [
-//     "companyName",
-//     "panNumber",
-//     "gstNumber",
-//     "companyAddress",
-//   ];
 
-//   const valid = await trigger(step2Fields);
-
-//   if (!valid) {
-//     toast.error("Please fix Company Info errors");
-//     return;
-//   }
-
-//   try {
-//     const response = await fetch("http://127.0.0.1:8000/submit", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(data),
-//     });
-
-//     const result = await response.json();
-
-//     console.log(result);
-
-//     toast.success(result.message);
-
-//     setStep(1);
-
-//   } catch (error) {
-//     console.log(error);
-//     toast.error("Submission Failed!");
-//   }
-// };
-
-const onSubmit = async (data) => {
-  const payload = {
-    personalInformation: {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      phone: data.phone,
-      dob: data.dob,
-      gender: data.gender,
-      skills: data.skills,
-      address: data.address,
-    },
-
-    companyInformation: {
+  const onSubmit = async (data) => {
+    const companyData = {
       companyName: data.companyName,
       panNumber: data.panNumber,
       gstNumber: data.gstNumber,
       companyAddress: data.companyAddress,
-    },
+    };
+
+    try {
+      const result = await saveCompany(companyData);
+
+      toast.success(result.message);
+
+      console.log(result);
+    } catch (error) {
+      toast.error("Failed to save company information");
+      console.error(error);
+      console.log(error.response);
+      console.log(error.response?.data);
+      console.log(error.message);
+      throw error;
+
+
+    }
   };
-
-  try {
-    const response = await fetch("http://127.0.0.1:8000/api/company/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const result = await response.json();
-
-    toast.success(result.message);
-  } catch (err) {
-    toast.error("Submission Failed");
-  }
-};
 
   const inputClass = "form-control";
 
@@ -145,7 +120,7 @@ const onSubmit = async (data) => {
 
         {/* HEADER */}
         <div className="bg-gradient bg-primary  rounded-3 text-dark text-center p-4">
-          
+
           <h2>
             {step === 1 ? "Personal Information" : "Company Information"}
           </h2>
@@ -159,13 +134,12 @@ const onSubmit = async (data) => {
 
         <div className="p-4 bg-light">
 
-      
+
           <div className="d-flex justify-content-between mb-4">
 
             <div className="d-flex align-items-center">
-              <div className={`rounded-circle fw-bold text-white d-flex align-items-center justify-content-center ${
-                step >= 1 ? "bg-success" : "bg-secondary"
-              }`} style={{ width: 40, height: 40 }}>
+              <div className={`rounded-circle fw-bold text-white d-flex align-items-center justify-content-center ${step >= 1 ? "bg-success" : "bg-secondary"
+                }`} style={{ width: 40, height: 40 }}>
                 1
               </div>
               <span className="ms-2 fw-semibold">Personal</span>
@@ -174,9 +148,8 @@ const onSubmit = async (data) => {
             <div className="flex-grow-1 mx-3 mt-3" style={{ height: 3, background: step > 1 ? "green" : "#ccc" }} />
 
             <div className="d-flex align-items-center">
-              <div className={`rounded-circle fw-bold text-white d-flex align-items-center justify-content-center ${
-                step >= 2 ? "bg-success" : "bg-secondary"
-              }`} style={{ width: 40, height: 40 }}>
+              <div className={`rounded-circle fw-bold text-white d-flex align-items-center justify-content-center ${step >= 2 ? "bg-success" : "bg-secondary"
+                }`} style={{ width: 40, height: 40 }}>
                 2
               </div>
               <span className="ms-2 fw-semibold">Company</span>
@@ -186,7 +159,7 @@ const onSubmit = async (data) => {
 
           <Form onSubmit={handleSubmit(onSubmit)}>
 
-           
+
             {step === 1 && (
               <Row className="g-3">
 
@@ -216,12 +189,33 @@ const onSubmit = async (data) => {
 
                 <Col md={6}>
                   <Form.Label>DOB</Form.Label>
-                  <Flatpickr
-                    className={`form-control ${errors.dob ? "is-invalid" : ""}`}
-                    onChange={(date) =>
-                      setValue("dob", date[0], { shouldValidate: true })
-                    }
-                  />
+              
+                    
+
+                    {/* Hidden input React Hook Form ke liye */}
+                    <input
+                      type="hidden"
+                      {...register("dob", {
+                        required: "Date of Birth is required",
+                      })}
+                    />
+
+                    <Flatpickr
+                      className={`form-control ${errors.dob ? "is-invalid" : ""}`}
+                      options={{
+                        dateFormat: "Y-m-d",
+                        disableMobile: true
+                      }}
+                      onChange={(selectedDates, dateStr) => {
+                        setValue("dob", dateStr, {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                        });
+                      }}
+                    />
+
+                    <ErrorText msg={errors.dob?.message} />
+                
                   <ErrorText msg={errors.dob?.message} />
                 </Col>
 
@@ -257,7 +251,7 @@ const onSubmit = async (data) => {
               </Row>
             )}
 
-          
+
             {step === 2 && (
               <Row className="g-3">
 
@@ -267,7 +261,7 @@ const onSubmit = async (data) => {
                   <ErrorText msg={errors.companyName?.message} />
                 </Col>
 
-                
+
 
                 <Col md={6}>
                   <Form.Label>PAN Number</Form.Label>
@@ -289,11 +283,11 @@ const onSubmit = async (data) => {
 
                 <Col md={12} className="d-flex justify-content-between">
                   <Button variant="secondary" onClick={() => setStep(1)}>
-                     Previous
+                    Previous
                   </Button>
 
                   <Button type="submit" variant="success">
-                    Submit 
+                    Submit
                   </Button>
                 </Col>
 

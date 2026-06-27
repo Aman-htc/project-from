@@ -1,0 +1,22 @@
+[
+    {
+        "firstName": "Aman",
+        "lastName": "kushwahah",
+        "email": "aman12@gmail.com",
+        "phone": "8987676543",
+        "dob": "2026-06-17",
+        "gender": "Male",
+        "skills": "python ",
+        "address": "arna"
+    },
+    {
+        "firstName": "Mark",
+        "lastName": "kushwahah",
+        "email": "aman.kushwaha@indixpert.in",
+        "phone": "989876545",
+        "dob": "2026-06-11",
+        "gender": "Male",
+        "skills": "java script",
+        "address": "arna"
+    }
+]
