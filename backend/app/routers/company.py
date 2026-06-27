@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.schemas.company import CompanyRequest
 from app.services.company_services import save_company
+from app.services.company_services import get_company
 
 router = APIRouter()
 
@@ -14,3 +15,9 @@ def submit(data: CompanyRequest):
         "success": True,
         "message": "Company Information Saved"
     }
+    
+    
+    
+@router.get("/company")
+def get_all():
+    return get_company()    
