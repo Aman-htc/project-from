@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers.company import routes as company_router
+from routes.company import router as company_router
 
 app = FastAPI(
     title="Company Registration API",
@@ -18,9 +18,6 @@ app.add_middleware(
 
 app.include_router(company_router)
 
-
 @app.get("/")
 def home():
-    return {
-        "message": "API Running Successfully"
-    }
+    return {"message": "API Running Successfully"}

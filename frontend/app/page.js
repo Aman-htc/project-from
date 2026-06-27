@@ -1,6 +1,4 @@
 
-
-
 "use client";
 
 import { useState } from "react";
@@ -58,33 +56,81 @@ export default function MultiStepForm() {
   };
 
   // FINAL SUBMIT
-  const onSubmit = async (data) => {
-    const step2Fields = [
-      "companyName",
-      "aadhaarNumber",
-      "panNumber",
-      "gstNumber",
-      "companyAddress",
-    ];
+//  const onSubmit = async (data) => {
+//   const step2Fields = [
+//     "companyName",
+//     "panNumber",
+//     "gstNumber",
+//     "companyAddress",
+//   ];
 
-    const valid = await trigger(step2Fields);
+//   const valid = await trigger(step2Fields);
 
-    if (!valid) {
-      toast.error("Please fix Company Info errors");
-      return;
-    }
+//   if (!valid) {
+//     toast.error("Please fix Company Info errors");
+//     return;
+//   }
 
-    try {
-      console.log("FINAL DATA:", data);
+//   try {
+//     const response = await fetch("http://127.0.0.1:8000/submit", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(data),
+//     });
 
+//     const result = await response.json();
 
-      toast.success(" Form Submitted Successfully!");
+//     console.log(result);
 
-      setStep(1); 
-    } catch (error) {
-      toast.error(" Submission Failed!");
-    }
+//     toast.success(result.message);
+
+//     setStep(1);
+
+//   } catch (error) {
+//     console.log(error);
+//     toast.error("Submission Failed!");
+//   }
+// };
+
+const onSubmit = async (data) => {
+  const payload = {
+    personalInformation: {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phone: data.phone,
+      dob: data.dob,
+      gender: data.gender,
+      skills: data.skills,
+      address: data.address,
+    },
+
+    companyInformation: {
+      companyName: data.companyName,
+      panNumber: data.panNumber,
+      gstNumber: data.gstNumber,
+      companyAddress: data.companyAddress,
+    },
   };
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/company/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+
+    toast.success(result.message);
+  } catch (err) {
+    toast.error("Submission Failed");
+  }
+};
 
   const inputClass = "form-control";
 
