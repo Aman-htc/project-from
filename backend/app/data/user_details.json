@@ -18,5 +18,15 @@
         "gender": "Male",
         "skills": "java script",
         "address": "arna"
+    },
+    {
+        "firstName": "vishal",
+        "lastName": "kushwaha",
+        "email": "aman12@gmail.com",
+        "phone": "8787676545",
+        "dob": "2026-06-23",
+        "gender": "Male",
+        "skills": "Algebra, Geometry, Classroom Management",
+        "address": "arna"
     }
 ]
