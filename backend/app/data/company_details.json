@@ -1,14 +1,58 @@
 [
     {
-        "companyName": "indixpert",
-        "panNumber": "787654",
-        "gstNumber": "878765654",
+        "id": 89,
+        "companyName": "amansma",
+        "panNumber": "878765",
+        "gstNumber": "712ywbw78236191823",
         "companyAddress": "arna"
     },
     {
+        "id": 90,
         "companyName": "indixpert",
-        "panNumber": "76ash672123",
+        "panNumber": "787654",
         "gstNumber": "712ywbw78236191823",
-        "companyAddress": "Delhi"
+        "companyAddress": "gopaglganj"
+    },
+    {
+        "id": 91,
+        "companyName": "indixp",
+        "panNumber": "787654",
+        "gstNumber": "712ywbw78236191823",
+        "companyAddress": "gopaglganj"
+    },
+    {
+        "id": 92,
+        "companyName": "indixpert tecnolagy pri",
+        "panNumber": "787654",
+        "gstNumber": "712ywbw78236191823",
+        "companyAddress": "delhi"
+    },
+    {
+        "id": 93,
+        "companyName": "indixpert tecnolagy pri",
+        "panNumber": "787654",
+        "gstNumber": "712ywbw78236191823",
+        "companyAddress": "delhi"
+    },
+    {
+        "id": 94,
+        "companyName": "indixpert tecnolagy pri",
+        "panNumber": "787654",
+        "gstNumber": "712ywbw78236191823",
+        "companyAddress": "delhi"
+    },
+    {
+        "id": 95,
+        "companyName": "indixpert tecnolagy pri",
+        "panNumber": "787654",
+        "gstNumber": "712ywbw78236191823",
+        "companyAddress": "delhi"
+    },
+    {
+        "id": 96,
+        "companyName": "indixpert tecnolagy pri",
+        "panNumber": "787654",
+        "gstNumber": "712ywbw78236191823",
+        "companyAddress": "delhi"
     }
 ]

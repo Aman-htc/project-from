@@ -8,3 +8,10 @@ export const getPersonal = async () => {
   const response = await api.get("/personal");
   return response.data;
 };
+
+export const updatePersonal = async (id,data) => {
+  const response = await api.put(`/personal/${id}`,data);
+  return response.data;
+};
+
+

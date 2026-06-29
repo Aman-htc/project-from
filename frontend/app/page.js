@@ -8,10 +8,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Table, Button, Card, Spinner } from "react-bootstrap";
+import { Table, Button, Card, Spinner, Modal } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 import { getPersonal } from "@/services/personalServices";
 import { getCompany } from "@/services/companyServices";
+import Companyfrom from "./components/company/companyfrom";
+import UserForm from "./components/user/userfrom";
 
 export default function Home() {
   const router = useRouter();
@@ -48,16 +50,37 @@ export default function Home() {
       setLoading(false);
     }
   };
-const [data,setData] =useState()
-
-  const compaynedit =(data)=>{
-    setData(data)
-
-    router.push("/companyfrom")
 
 
-  }
+  const [show, setShow] = useState(false);
+  const [companyEdit, setCompanyEdit] = useState(null);
 
+  const companyEditData = (item) => {
+    setCompanyEdit(
+      item,
+
+    );
+
+    setShow(true);
+  };
+
+  const closeModal = () => {
+    setShow(false);
+    setCompanyEdit(null);
+  };
+
+
+  const [showPersonal, setShowPersonal] = useState(false);
+  const [personalEdit, setPersonalEdit] = useState(null);
+  const personalEditData = (item) => {
+    setPersonalEdit(item);
+    setShowPersonal(true);
+  };
+
+  const closePersonalModal = () => {
+    setShowPersonal(false);
+    setPersonalEdit(null);
+  };
   return (
     <div className="container py-5">
 
@@ -71,7 +94,7 @@ const [data,setData] =useState()
             variant="light"
             onClick={() => router.push("/userfrom")}
           >
-             Add Employee
+            Add Employee
           </Button>
 
         </Card.Header>
@@ -128,6 +151,7 @@ const [data,setData] =useState()
                           size="sm"
                           variant="warning"
                           className="me-2"
+                          onClick={() => personalEditData(user)}
                         >
                           Edit
                         </Button>
@@ -147,10 +171,31 @@ const [data,setData] =useState()
 
               </tbody>
 
+
             </Table>
           )}
 
         </Card.Body>
+        <Modal
+          show={showPersonal}
+          onHide={closePersonalModal}
+          centered
+          size="lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {personalEdit ? "Update Employee" : "Add Employee"}
+            </Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <UserForm
+              edit={personalEdit}
+              onClose={closePersonalModal}
+              reload={loadUsers}
+            />
+          </Modal.Body>
+        </Modal>
 
       </Card>
 
@@ -161,7 +206,7 @@ const [data,setData] =useState()
         <Card.Header className="bg-success text-white d-flex justify-content-between align-items-center">
           <h4 className="mb-0">Company Details</h4>
 
-          <Button onClick={() => router.push("/companyfrom")}>
+          <Button onClick={() => router.push("/company")}>
             Add Company
           </Button>
         </Card.Header>
@@ -199,9 +244,13 @@ const [data,setData] =useState()
 
                   <td>
 
-                   
 
-                    <Button size="sm" variant="warning"  onClick={()=>{compaynedit(item)}} className="me-2">
+
+                    <Button
+                      size="sm"
+                      variant="warning"
+                      onClick={() => companyEditData(item)}
+                    >
                       Edit
                     </Button>
 
@@ -210,7 +259,7 @@ const [data,setData] =useState()
                     </Button>
 
                   </td>
-              
+
 
                 </tr>
 
@@ -218,7 +267,29 @@ const [data,setData] =useState()
 
             </tbody>
 
+
+
           </Table>
+          <Modal
+            show={show}
+            onHide={closeModal}
+            centered
+            size="lg"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>
+                {companyEdit ? "Update Company" : "Add Company"}
+              </Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <Companyfrom
+                edit={companyEdit}
+                onClose={closeModal}
+                reload={loadcomapanydata}
+              />
+            </Modal.Body>
+          </Modal>
 
         </Card.Body>
 

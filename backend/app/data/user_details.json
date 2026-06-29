@@ -1,32 +1,13 @@
 [
     {
-        "firstName": "Aman",
-        "lastName": "kushwahah",
-        "email": "aman12@gmail.com",
-        "phone": "8987676543",
-        "dob": "2026-06-17",
+        "id": 1,
+        "firstName": "Mark",
+        "lastName": "kushwaha",
+        "email": "amanhtc1112kushwaha@gmail.com",
+        "phone": "8787654543",
+        "dob": "2026-06-25",
         "gender": "Male",
         "skills": "python ",
-        "address": "arna"
-    },
-    {
-        "firstName": "Mark",
-        "lastName": "kushwahah",
-        "email": "aman.kushwaha@indixpert.in",
-        "phone": "989876545",
-        "dob": "2026-06-11",
-        "gender": "Male",
-        "skills": "java script",
-        "address": "arna"
-    },
-    {
-        "firstName": "vishal",
-        "lastName": "kushwaha",
-        "email": "aman12@gmail.com",
-        "phone": "8787676545",
-        "dob": "2026-06-23",
-        "gender": "Male",
-        "skills": "Algebra, Geometry, Classroom Management",
-        "address": "arna"
+        "address": "aana"
     }
 ]

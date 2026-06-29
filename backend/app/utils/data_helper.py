@@ -18,9 +18,6 @@ def save_json(file_path, data):
 
     with open(file_path, "w") as file:
         json.dump(records, file, indent=4, default=str)
-        
-        
-        
 
 
 def read_json(file_path):
@@ -36,4 +33,4 @@ def read_json(file_path):
 
 def write_json(file_path, data):
     with open(file_path, "w") as file:
-        json.dump(data, file, indent=4)        
+        json.dump(data, file, indent=4)

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -16,48 +16,71 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { saveCompany } from "@/services/companyServices";
+import { saveCompany, updateCompany } from "@/services/companyServices";
 
-const Page = () => {
+const Companyfrom = ({ edit, onClose, reload }) => {
     const router = useRouter();
 
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm({
         mode: "onTouched",
     });
 
+
+    useEffect(() => {
+        if (edit) {
+            reset({
+                companyName: edit.companyName,
+                panNumber: edit.panNumber,
+                gstNumber: edit.gstNumber,
+                companyAddress: edit.companyAddress,
+            });
+        }
+    }, [edit, reset]);
+
     const ErrorText = ({ msg }) =>
         msg ? <small className="text-danger">{msg}</small> : null;
 
-    const onSubmit = async (data) => {
-        const companyData = {
-            companyName: data.companyName,
-            panNumber: data.panNumber,
-            gstNumber: data.gstNumber,
-            companyAddress: data.companyAddress,
-        };
+   const onSubmit = async (data) => {
 
-        try {
-            const result = await saveCompany(companyData);
-
-            toast.success(result?.message || "Company saved successfully");
-
-            
-          
-            router.push("/");
-        } catch (error) {
-            console.error(error);
-
-            toast.error(
-                error?.response?.data?.message ||
-                "Failed to save company information"
-            );
-        }
+    const companyData = {
+        companyName: data.companyName,
+        panNumber: data.panNumber,
+        gstNumber: data.gstNumber,
+        companyAddress: data.companyAddress,
     };
 
+    try {
+
+        if (edit) {
+
+            // UPDATE
+            await updateCompany(edit.id, companyData);
+
+            toast.success("Company Updated Successfully");
+
+        } else {
+
+            // SAVE
+            await saveCompany(companyData);
+
+            toast.success("Company Saved Successfully");
+        }
+
+        reload;    
+        onClose;    
+        reset();      
+
+    } catch (err) {
+
+        console.log(err);
+        toast.error("Something went wrong");
+    }
+};
     return (
         <div
             className="min-vh-100 d-flex justify-content-center align-items-center py-5"
@@ -108,7 +131,7 @@ const Page = () => {
                 <Card.Body className="p-5">
                     {/* Step */}
 
-                    
+
 
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Row className="g-4">
@@ -145,7 +168,7 @@ const Page = () => {
                                         style={{ textTransform: "uppercase" }}
                                         {...register("panNumber", {
                                             required: "PAN Number is required",
-                                           
+
                                         })}
                                     />
 
@@ -214,12 +237,8 @@ const Page = () => {
                                         type="submit"
                                         size="lg"
                                         className="px-5 rounded-pill"
-                                        style={{
-                                            background: "#16a34a",
-                                            border: "none",
-                                        }}
                                     >
-                                        Submit ✔
+                                        {edit ? "Update Company" : "Save Company"}
                                     </Button>
 
                                 </div>
@@ -233,4 +252,4 @@ const Page = () => {
     );
 };
 
-export default Page;
+export default Companyfrom;

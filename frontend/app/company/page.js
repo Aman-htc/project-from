@@ -1,10 +1,12 @@
 import React from 'react'
-import UserForm from '../components/user/userfrom'
+import Companyfrom from '../components/company/companyfrom'
+
+
 
 const page = () => {
   return (
     <div>
-        <UserForm/>
+        <Companyfrom/>
       
     </div>
   )
